@@ -1,4 +1,4 @@
-//Login Rucula
+//Función Login Rucula
 function login() {
 
     const usuario = prompt("Ingresa tu nombre de usuario:");
@@ -12,9 +12,9 @@ login();
 
 //Cotización Ruculeta!
 const cotizaciones = {
-    "dolar": 350,
-    "euro": 400,
-    "peso": 0.01
+    "dolar": 1250,
+    "euro": 1550,
+    "peso": 1,
   };
   
   // Array para almacenar el historial de monedas consultadas
