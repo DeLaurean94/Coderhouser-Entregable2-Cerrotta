@@ -1,0 +1,16 @@
+body {
+    background-color: #81d0a0;
+  }
+
+  p {
+    font-size: 20px;
+    margin: 30px;
+  }
+
+  .header-main {
+    background-color: #009688;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+  }
