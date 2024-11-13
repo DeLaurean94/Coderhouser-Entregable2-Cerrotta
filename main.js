@@ -1,4 +1,4 @@
-/* PRE ENTREGA 1
+/* Entregable 1 + Cerrotta
 
 //Función Login Rucula
 function login() {
@@ -61,7 +61,7 @@ const cotizaciones = {
   verHistorial();
 */
 
-  // Función para aplicar lectura del DOM e interacción en HTML
+// Entregable 2 + Cerrotta
 
   const cotizaciones = {
     "dolar": 1250,
