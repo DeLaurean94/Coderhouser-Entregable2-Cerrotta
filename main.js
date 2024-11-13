@@ -1,3 +1,5 @@
+/* PRE ENTREGA 1
+
 //Función Login Rucula
 function login() {
 
@@ -57,3 +59,75 @@ const cotizaciones = {
   consultarCotizacion();
 
   verHistorial();
+*/
+
+  // Función para aplicar lectura del DOM e interacción en HTML
+
+  const cotizaciones = {
+    "dolar": 1250,
+    "euro": 1550,
+    "peso": 1,
+  };
+
+function selectCurrency(currency) {
+    document.getElementById('dropdownCurrencyButton').textContent = currency;
+    window.selectedCurrency = currency;
+}
+
+function consultarCotizacion() {
+    if (!window.selectedCurrency) {
+        alert("Por favor, selecciona una moneda.");
+        return;
+    }
+
+    const cotizacion = cotizaciones[window.selectedCurrency];
+    if (cotizacion !== undefined) {
+        alert(`La cotización del ${window.selectedCurrency} es ${cotizacion}.`);
+        guardarEnHistorial(window.selectedCurrency, cotizacion);
+        mostrarHistorial();
+    } else {
+        alert("Moneda no encontrada.");
+    }
+}
+
+function guardarEnHistorial(moneda, cotizacion) {
+    let historial = JSON.parse(localStorage.getItem('historialCotizaciones')) || [];
+
+    const nuevaConsulta = {
+        moneda: moneda,
+        cotizacion: cotizacion,
+        fecha: new Date().toLocaleString()
+    };
+    historial.push(nuevaConsulta);
+
+    localStorage.setItem('historialCotizaciones', JSON.stringify(historial));
+}
+
+function mostrarHistorial() {
+  const historialDiv = document.getElementById('historial-entradas');
+  historialDiv.innerHTML = ''; 
+
+  const historial = JSON.parse(localStorage.getItem('historialCotizaciones')) || [];
+
+  historial.forEach((entrada) => {
+      const historialItem = document.createElement('p');
+      historialItem.textContent = `${entrada.fecha} - ${entrada.moneda}: ${entrada.cotizacion}`;
+      historialDiv.appendChild(historialItem);
+  });
+}
+
+function limpiarHistorial() {
+  localStorage.removeItem('historialCotizaciones');
+
+  const historialDiv = document.getElementById('historial-entradas');
+  historialDiv.innerHTML = '';
+
+  alert('Historial limpiado.');
+}
+
+document.getElementById('limpiar-historial').addEventListener('click', limpiarHistorial);
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".btn-primary").addEventListener("click", consultarCotizacion);
+    mostrarHistorial();
+});

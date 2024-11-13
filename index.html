@@ -13,8 +13,29 @@
     <h1>Cotizaciones Rucula</h1>
     <h2>¡La mejor cotización al instante!</h2>
     </header>
+    <div class="mt-4">
+        <p>Selecciona aquí la moneda que quieres consultar su cotización</p>
+        <div class="dropdown my-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCurrencyButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Seleccionar moneda
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownCurrencyButton">
+                <li><a class="dropdown-item" href="#" onclick="selectCurrency('dolar')">Dólar</a></li>
+                <li><a class="dropdown-item" href="#" onclick="selectCurrency('euro')">Euro</a></li>
+                <li><a class="dropdown-item" href="#" onclick="selectCurrency('peso')">Peso</a></li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" type="button">Consultar cotización</button>
+        </div>
+    </div>
+    <div id="historial" class="mt-4">
+        <h4>Historial de consultas</h4>
+        <div id="historial-entradas">
+
+        </div>
+    </div>
     <div>
-        <p>Podras consultarnos al momento las distintas cotizaciones del dolar en Argentina.</p>
+        <button class="btn btn-primary" id="limpiar-historial">Limpiar Historial</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
