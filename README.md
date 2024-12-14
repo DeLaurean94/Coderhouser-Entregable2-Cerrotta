@@ -10,7 +10,7 @@ Interfaz intuitiva: La aplicación cuenta con una interfaz sencilla para la sele
 Tecnologías y Librerías
 El proyecto utiliza varias librerías y APIs para su funcionamiento. A continuación se describen las más relevantes:
 
-Librerías utilizadas:
+Librerías, framework y tecnologias utilizadas:
 
 Luxon: Para la manipulación y formato de fechas.
 Documentación de Luxon
@@ -20,6 +20,7 @@ APIs utilizadas
 ExchangeRate-API: API para obtener las cotizaciones de monedas internacionales con respecto al Peso Argentino.
 Documentación de ExchangeRate-API
 MockAPI.io: Un servicio de backend como servicio (BaaS) para almacenar y recuperar datos. En este proyecto, se utiliza para guardar el historial de cotizaciones.
+Bootstrap
 
 Flujo de Funcionamiento
 El usuario selecciona una moneda de la lista (por ejemplo, Dólar, Euro, etc.).

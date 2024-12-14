@@ -67,18 +67,16 @@ const cotizaciones = {
 
 const DateTime = luxon.DateTime;
 
-const API_KEY = 'b9942a1e74b6eeba30087fd1';  // Tu API Key de ExchangeRate-API
+const API_KEY = 'b9942a1e74b6eeba30087fd1';  
 const BASE_URL = 'https://v6.exchangerate-api.com/v6';
 
-// URL de tu recurso de MockAPI.io
-const mockApiUrl = 'https://675da3a963b05ed079786b75.mockapi.io/bdrucula/historialCotizaciones';  // URL correcta
+const mockApiUrl = 'https://675da3a963b05ed079786b75.mockapi.io/bdrucula/historialCotizaciones';
 
-// Mapeo de monedas
 const monedaMap = {
     "dolar": "USD",
     "euro": "EUR",
     "libra": "GBP",
-    "yen": "JPY", // Si necesitas más monedas, las puedes agregar aquí
+    "yen": "JPY",
 };
 
 function selectCurrency(currency) {
@@ -97,9 +95,7 @@ async function consultarCotizacion() {
     }
 
     try {
-        // Traducir la moneda seleccionada (ej. "dolar" -> "USD")
         const monedaSeleccionada = monedaMap[window.selectedCurrency.toLowerCase()];
-
         if (!monedaSeleccionada) {
             Swal.fire({
                 icon: 'error',
@@ -109,22 +105,13 @@ async function consultarCotizacion() {
             return;
         }
 
-        // Construir la URL de la API usando el código de la moneda (por ejemplo, USD)
         const respuesta = await fetch(`${BASE_URL}/${API_KEY}/latest/ARS`);
         const data = await respuesta.json();
 
-        console.log("Respuesta de la API:", data);  // Verificar la respuesta de la API para depuración
-
         if (data.result === 'success') {
-            // Verificar si la moneda seleccionada está presente en los rates
             if (data.conversion_rates && data.conversion_rates[monedaSeleccionada] !== undefined) {
                 const cotizacion = data.conversion_rates[monedaSeleccionada];
-
-                // Mostrar la cotización en la consola para verificar el valor
-                console.log(`Cotización del ${monedaSeleccionada}: ${cotizacion}`);
-
-                // Si la cotización es muy baja (cerca de 0), invertimos el valor para mostrarlo correctamente
-                const cotizacionFinal = (1 / cotizacion).toFixed(2);  // Asegúrate de que sea legible
+                const cotizacionFinal = (1 / cotizacion).toFixed(2);
 
                 Swal.fire({
                     icon: 'success',
@@ -132,10 +119,9 @@ async function consultarCotizacion() {
                     text: `La cotización del ${monedaSeleccionada} es ${cotizacionFinal} pesos argentinos.`,
                 });
 
-                // Guardar el historial en MockAPI.io
-                guardarEnHistorial(mockApiUrl, monedaSeleccionada, cotizacionFinal);
+                await guardarEnHistorial(mockApiUrl, monedaSeleccionada, cotizacionFinal);
+                await mostrarHistorial();
             } else {
-                // Si no se encuentra la moneda en los rates, mostramos un error
                 Swal.fire({
                     icon: 'error',
                     title: '¡Error!',
@@ -150,7 +136,7 @@ async function consultarCotizacion() {
             });
         }
     } catch (error) {
-        console.error('Error en la solicitud:', error);  // Verificar el error de la solicitud
+        console.error('Error en la solicitud:', error);
         Swal.fire({
             icon: 'error',
             title: '¡Error!',
@@ -159,18 +145,11 @@ async function consultarCotizacion() {
     }
 }
 
-// Función para guardar el historial en MockAPI.io
 async function guardarEnHistorial(apiUrl, moneda, cotizacion) {
     const fechaLuxon = DateTime.now().toFormat('yyyy-LL-dd HH:mm:ss');
-
-    const nuevaConsulta = {
-        moneda: moneda,
-        cotizacion: cotizacion,
-        fecha: fechaLuxon
-    };
+    const nuevaConsulta = { moneda, cotizacion, fecha: fechaLuxon };
 
     try {
-        // Realizar la solicitud POST
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
@@ -180,21 +159,15 @@ async function guardarEnHistorial(apiUrl, moneda, cotizacion) {
         });
 
         const data = await response.json();
-        console.log("Datos guardados en MockAPI.io:", data);
     } catch (error) {
         console.error('Error al guardar en MockAPI.io:', error);
     }
 }
 
-// Función para mostrar el historial desde MockAPI.io
 async function mostrarHistorial() {
     try {
-        // Realizar la solicitud GET para obtener el historial
         const response = await fetch(mockApiUrl);
         const historial = await response.json();
-
-        // Verificar si recibimos los datos correctamente
-        console.log('Historial recibido:', historial);
 
         const historialDiv = document.getElementById('historial-entradas');
         historialDiv.innerHTML = '';
@@ -209,21 +182,11 @@ async function mostrarHistorial() {
     }
 }
 
-function limpiarHistorial() {
-    Swal.fire({
-        icon: 'success',
-        title: 'Historial Limpiado',
-        text: 'El historial ha sido limpiado exitosamente.',
-    });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".btn-primary").addEventListener("click", consultarCotizacion);
-    document.getElementById('limpiar-historial').addEventListener('click', limpiarHistorial);
-
+    document.getElementById('limpiar-historial').addEventListener('click', () => limpiarHistorial(mockApiUrl));
     mostrarHistorial();
 });
 
 window.selectCurrency = selectCurrency;
 window.consultarCotizacion = consultarCotizacion;
-window.limpiarHistorial = limpiarHistorial;
